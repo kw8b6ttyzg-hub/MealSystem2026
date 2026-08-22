@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>6-Monats Meal System 🌸</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root{
+  --bg:#fff3f8;
+  --pink-050:#fff0f6;
+  --pink-100:#ffd9ea;
+  --pink-200:#ffb8dd;
+  --pink-300:#ff8ec6;
+  --pink-400:#f75fab;
+  --pink-500:#e63e93;
+  --pink-600:#c02575;
+  --plum:#54123d;
+  --gold:#ffd97a;
+  --white:#fffdfe;
+  --line:#ffd0e6;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--plum);font-family:'Nunito',sans-serif;}
+body{
+  background:
+    radial-gradient(circle at 8% 8%, #ffe1ef 0%, transparent 40%),
+    radial-gradient(circle at 95% 15%, #ffd3ea 0%, transparent 35%),
+    radial-gradient(circle at 50% 100%, #ffe8f3 0%, transparent 45%),
+    var(--bg);
+  min-height:100vh;
+}
+h1,h2,h3,h4{font-family:'Baloo 2','Segoe UI',Verdana,sans-serif;color:var(--pink-600);margin:.2em 0;}
+.wrap{max-width:1400px;margin:0 auto;padding:28px 34px 80px;}
+
+/* HERO */
+.hero{
+  background:linear-gradient(120deg,var(--pink-300),var(--pink-500));
+  border-radius:32px;
+  padding:34px 44px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 14px 30px -12px rgba(230,62,147,.55);
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"🌸🍓🥞🍩🎀";
+  position:absolute; right:-10px; bottom:-18px; font-size:64px; opacity:.18; letter-spacing:6px;
+}
+.hero h1{color:#fff; font-size:2.5rem; margin:0;}
+.hero p{margin:.4em 0 0; font-size:1.05rem; opacity:.95; max-width:560px;}
+.hero .badge{
+  background:rgba(255,255,255,.22); border:2px solid rgba(255,255,255,.6);
+  padding:10px 18px; border-radius:20px; font-family:'Baloo 2'; font-weight:700; font-size:.95rem;
+  white-space:nowrap;
+}
+
+/* TABS */
+.tabbar{display:flex; gap:10px; margin:26px 0 18px; flex-wrap:wrap;}
+input[name="tabs"]{display:none;}
+.tabbar label{
+  cursor:pointer; font-family:'Baloo 2'; font-weight:700; font-size:1.02rem;
+  padding:11px 22px; border-radius:999px; background:var(--white);
+  border:2px solid var(--pink-200); color:var(--pink-500);
+  transition:all .15s ease; box-shadow:0 3px 0 var(--pink-100);
+}
+.tabbar label:hover{background:var(--pink-050);}
+.panels section{display:none;}
+#t1:checked ~ .panels #p1{display:block;}
+#t2:checked ~ .panels #p2{display:block;}
+#t3:checked ~ .panels #p3{display:block;}
+#t4:checked ~ .panels #p4{display:block;}
+#t5:checked ~ .panels #p5{display:block;}
+#t6:checked ~ .panels #p6{display:block;}
+#t1:checked ~ .tabbar label[for="t1"],
+#t2:checked ~ .tabbar label[for="t2"],
+#t3:checked ~ .tabbar label[for="t3"],
+#t4:checked ~ .tabbar label[for="t4"],
+#t5:checked ~ .tabbar label[for="t5"],
+#t6:checked ~ .tabbar label[for="t6"]{
+  background:var(--pink-500); color:#fff; border-color:var(--pink-500); box-shadow:0 3px 0 var(--pink-600);
+}
+
+/* CARDS / SECTIONS */
+.card{
+  background:var(--white); border:2px solid var(--pink-100); border-radius:24px;
+  padding:24px 26px; margin-bottom:26px; box-shadow:0 6px 18px -10px rgba(230,62,147,.25);
+}
+.card h2{font-size:1.5rem; display:flex; align-items:center; gap:10px;}
+.card h2 small{font-family:'Nunito'; font-weight:700; font-size:.6em; color:var(--pink-400); background:var(--pink-050); padding:4px 12px; border-radius:999px; border:1px solid var(--pink-200);}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+@media (max-width:980px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+/* TABLES */
+table{width:100%; border-collapse:collapse; font-size:.94rem;}
+thead th{
+  background:linear-gradient(120deg,var(--pink-400),var(--pink-500)); color:#fff;
+  font-family:'Baloo 2'; font-weight:600; padding:10px 12px; text-align:left;
+  position:sticky; top:0;
+}
+thead th:first-child{border-radius:12px 0 0 0;}
+thead th:last-child{border-radius:0 12px 0 0;}
+tbody td{padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+tbody tr:nth-child(even){background:var(--pink-050);}
+tbody tr:hover{background:#ffe3f0;}
+.tbl-wrap{overflow-x:auto; border-radius:14px; border:2px solid var(--pink-100);}
+
+/* overview table meal cells */
+.meal-overview td{min-width:150px;}
+.dish{font-weight:800; color:var(--plum); display:block;}
+.dish .ico{margin-right:4px;}
+.note{display:block; font-size:.78rem; color:var(--pink-500); margin-top:2px;}
+.day-cell{font-family:'Baloo 2'; font-weight:700; color:#fff; background:var(--pink-500) !important; border-radius:10px; text-align:center;}
+
+/* container chips */
+.chip-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px;}
+.chip{
+  display:flex; align-items:center; gap:8px; padding:7px 12px; font-size:.85rem; font-weight:700;
+  background:var(--pink-050); border:2px solid var(--pink-200); border-radius:14px; color:var(--pink-600);
+}
+.shape{width:16px; height:16px; background:var(--pink-400); flex:none; border:2px solid var(--pink-600);}
+.shape.circle{border-radius:50%;}
+.shape.square{border-radius:3px;}
+.shape.rect{border-radius:3px; width:22px; height:12px;}
+
+/* checkbox list for shopping */
+.shop-list{list-style:none; margin:0; padding:0; columns:1;}
+.shop-list li{padding:9px 0; border-bottom:1px dashed var(--pink-200); display:flex; align-items:center; gap:12px;}
+.shop-list li .chk{
+  appearance:none; -webkit-appearance:none; width:24px; height:24px; flex:none;
+  border:2px solid var(--pink-400); border-radius:7px; background:#fff; cursor:pointer; position:relative;
+  touch-action:manipulation;
+}
+.shop-list li .chk:checked{background:var(--pink-400); border-color:var(--pink-500);}
+.shop-list li .chk:checked::after{
+  content:"✓"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:15px; font-weight:800;
+}
+.shop-list li .txt{
+  outline:none; border-radius:6px; padding:6px 6px; flex:1; cursor:text;
+  -webkit-user-select:text; user-select:text; touch-action:manipulation;
+}
+.shop-list li .txt:focus{background:var(--pink-050); box-shadow:0 0 0 2px var(--pink-200);}
+.shop-list li.done .txt{text-decoration:line-through; opacity:.5;}
+.list-hint{font-size:.78rem; color:var(--pink-500); margin:0 0 10px; font-style:italic;}
+
+.divider{height:14px; margin:8px 0 22px; background:
+  radial-gradient(circle at 10px 0, transparent 9px, var(--pink-200) 10px) top left/20px 14px repeat-x;
+  opacity:.6;}
+
+.pill{display:inline-block; background:var(--gold); color:var(--plum); font-family:'Baloo 2'; font-weight:700; padding:3px 12px; border-radius:999px; font-size:.8rem; margin-bottom:8px;}
+
+.recipe{border:2px solid var(--pink-100); border-radius:18px; padding:16px 18px; background:var(--pink-050); margin-bottom:16px;}
+.recipe h4{margin:0 0 6px; font-size:1.05rem;}
+.recipe .meta{font-size:.8rem; color:var(--pink-500); font-weight:700; margin-bottom:8px;}
+.recipe ul, .recipe ol{margin:6px 0 0; padding-left:20px; font-size:.9rem;}
+.recipe .ing{background:#fff; border-radius:10px; padding:8px 12px; font-size:.85rem; margin-bottom:6px;}
+
+.emergency{background:linear-gradient(135deg,#fff,var(--pink-050)); border:3px dashed var(--pink-400);}
+.steps-h{display:flex; align-items:center; gap:12px; margin:14px 0 6px;}
+.stepnum{background:var(--pink-500); color:#fff; font-family:'Baloo 2'; font-weight:800; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none;}
+
+footer{text-align:center; margin-top:30px; color:var(--pink-400); font-family:'Baloo 2'; font-size:.9rem;}
+
+@media print{
+  @page{ size: A4 landscape; margin:12mm; }
+  body{background:#fff;}
+  .tabbar{display:none;}
+  .panels section{display:block !important; page-break-after:always;}
+  .hero::after{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div>
+      <h1>🌸 6-Monats Meal System 🎀</h1>
+      <p>Deine übersichtliche Meal-Prep-Bibel: Einkaufsliste → Sonntags-Prep → Wochenplan → Rezeptbuch. Alles auf einen Blick, alles pink. 🍓</p>
+    </div>
+    <div class="badge">4× Gym / Woche 💪🩷</div>
+  </div>
+
+  <input type="radio" name="tabs" id="t1" checked>
+  <input type="radio" name="tabs" id="t2">
+  <input type="radio" name="tabs" id="t3">
+  <input type="radio" name="tabs" id="t4">
+  <input type="radio" name="tabs" id="t5">
+  <input type="radio" name="tabs" id="t6">
+
+  <div class="tabbar">
+    <label for="t1">🥞 Woche 1</label>
+    <label for="t2">🌯 Woche 2</label>
+    <label for="t3">🥩 Woche 3</label>
+    <label for="t4">💗 Woche 4 (Favoriten)</label>
+    <label for="t5">📖 Rezeptbuch</label>
+    <label for="t6">🚨 Notfallplan</label>
+  </div>
+
+  <div class="panels">
+
+    <!-- ============ WOCHE 1 ============ -->
+    <section id="p1">
+
+      <div class="card">
+        <h2>🛒 Einkaufsliste <small>vor Wochenstart erledigen</small></h2>
+        <p class="list-hint">✅ Antippen zum Abhaken · ✏️ Text antippen &amp; direkt bearbeiten</p>
+        <div class="grid3">
+          <div>
+            <div class="pill">🥩 Protein</div>
+            <ul class="shop-list">
+              <li>600–700 g Steak</li><li>700–800 g Hähnchenbrust/-schenkel</li>
+              <li>500 g mageres Rinderhack</li><li>6 Eier</li>
+              <li>1 großer Becher Griech. Joghurt</li><li>Protein-Whey-Pulver</li><li>Vollmilch</li>
+            </ul>
+          </div>
+          <div>
+            <div class="pill">🍚 Kohlenhydrate</div>
+            <ul class="shop-list">
+              <li>Basmatireis</li><li>Spaghetti</li><li>Mehl</li><li>Brioche</li>
+              <li>Granola</li><li>Tortillas</li><li>Kartoffeln</li>
+            </ul>
+            <div class="pill" style="margin-top:14px;">🍌 Obst</div>
+            <ul class="shop-list"><li>7 Bananen</li><li>Ananas</li><li>Orangen</li></ul>
+          </div>
+          <div>
+            <div class="pill">🥦 Gemüse</div>
+            <ul class="shop-list"><li>Kale</li><li>1 Beutel TK-Brokkoli</li><li>1 kleine Dose Mais</li></ul>
+            <div class="pill" style="margin-top:14px;">🧈 Sonstiges</div>
+            <ul class="shop-list">
+              <li>Nutella</li><li>Erdnussbutter</li><li>Honig</li><li>Teriyaki-Sauce</li>
+              <li>Sojasauce</li><li>Tomaten-Passata</li><li>Kochcreme</li><li>Paniermehl</li>
+              <li>Olivenöl</li><li>Knoblauchpulver</li><li>Paprikapulver</li><li>Salz & Pfeffer</li>
+              <li>Salsa</li><li>Sour Cream</li><li>Backpapier</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🧺 Sonntags-Prep <small>~90 Minuten Batch-Cooking</small></h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Schritt</th><th>Zutaten</th><th>Kurzablauf</th><th>Ergibt</th></tr></thead>
+            <tbody>
+              <tr><td>1️⃣ Reis</td><td>300 g Basmatireis, Wasser</td><td>Waschen, im Reiskocher garen, 5 Min. zugedeckt ruhen, auflockern – <b>noch nicht portionieren</b></td><td>Basis für alle Reis-Bowls</td></tr>
+              <tr><td>2️⃣ Honig-Knoblauch-Hähnchen</td><td>700–800 g Hähnchen, Öl, Knoblauchpulver, Salz, Pfeffer, Honig, Sojasauce</td><td>Ofen 200°C, würzen, 20 Min. backen (nach 10 Min. wenden), mit Honig-Soja-Mix vermengen</td><td>Mon/Di/Mi Lunch</td></tr>
+              <tr><td>3️⃣ Brokkoli</td><td>TK-Brokkoli (kleine Portion)</td><td>In der Mikrowelle nach Packungsangabe garen, abtropfen</td><td>Beilage zu Reis-Bowls</td></tr>
+              <tr><td>4️⃣ Frikadellen</td><td>500 g Rinderhack, 1 Ei, 40 g Paniermehl, Gewürze, 500 g Passata, Kale</td><td>Formen, anbraten, mit Passata & Kale ablöschen, 12–15 Min. köcheln</td><td>Mo Dinner + Freezer</td></tr>
+              <tr><td>5️⃣ Crêpe-Teig</td><td>2 Eier, 2 Tassen Mehl, 1 Tasse Milch, 1 Tasse Wasser, Salz, Öl</td><td>Verquirlen, mehrere Crêpes backen, abkühlen lassen</td><td>Frühstück ganze Woche</td></tr>
+              <tr><td>6️⃣ Spaghetti</td><td>Spaghetti, Salz, Wasser</td><td>Kochen nach Packungsangabe (nicht die ganze Wochenmenge!)</td><td>Mo Dinner</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📦 Container-Plan <small>Sonntagabend befüllen &amp; beschriften</small></h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Behälter</th><th>Form / Größe</th><th>Inhalt</th><th>Für wann</th></tr></thead>
+            <tbody>
+              <tr><td>Rechteck groß</td><td><span class="chip"><span class="shape rect"></span>1040 ml</span></td><td>Reis + Hähnchen + Brokkoli + Sauce</td><td>Montag Lunch</td></tr>
+              <tr><td>Square groß</td><td><span class="chip"><span class="shape square"></span>800 ml</span></td><td>Reis + Hähnchen + Brokkoli + Sauce</td><td>Dienstag Lunch</td></tr>
+              <tr><td>Circle groß</td><td><span class="chip"><span class="shape circle"></span>970 ml</span></td><td>Reis + Hähnchen + Brokkoli + Sauce</td><td>Mittwoch Lunch (ggf. einfrieren)</td></tr>
+              <tr><td>Circle mittel</td><td><span class="chip"><span class="shape circle"></span>640 ml</span></td><td>Extra Reis</td><td>Notfall-Carb</td></tr>
+              <tr><td>Rechteck mittel</td><td><span class="chip"><span class="shape rect"></span>630 ml</span></td><td>Extra Hähnchen</td><td>Notfall / Do Lunch</td></tr>
+              <tr><td>Square mittel</td><td><span class="chip"><span class="shape square"></span>530 ml</span></td><td>Frikadellen + Sauce</td><td>Fridge/Freezer</td></tr>
+              <tr><td>Rechteck klein ×2</td><td><span class="chip"><span class="shape rect"></span>370 ml</span></td><td>2–3 Crêpes (ohne Nutella/Banane!)</td><td>Frühstück</td></tr>
+              <tr><td>Circle klein ×2</td><td><span class="chip"><span class="shape circle"></span>390 ml</span></td><td>Griech. Joghurt (ohne Granola)</td><td>Snack</td></tr>
+              <tr><td>Square klein ×2</td><td><span class="chip"><span class="shape square"></span>310 ml</span></td><td>Ananas / Banane</td><td>Snack</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:.85rem;color:var(--pink-500);margin-top:10px;">🚫 Keine 25 Tupperware im WG-Kühlschrank – genau diese Menge reicht.</p>
+      </div>
+
+      <div class="card">
+        <h2>📅 Wochenübersicht <small>Klick auf Rezept-Namen findest du im 📖 Rezeptbuch</small></h2>
+        <div class="tbl-wrap">
+          <table class="meal-overview">
+            <thead><tr><th>Tag</th><th>🥞 Frühstück</th><th>🍌 Snack</th><th>🍗 Mittag</th><th>🥛 Snack</th><th>🍝 Abend</th></tr></thead>
+            <tbody>
+              <tr><td class="day-cell">MO</td>
+                <td><span class="dish">Nutella-Bananen-Crêpes</span></td>
+                <td><span class="dish">Banane + PB</span></td>
+                <td><span class="dish">Honig-Knoblauch-Hähnchen-Reis</span><span class="note">1040 ml • + Orange/Ananas</span></td>
+                <td><span class="dish">Protein-Whey-Milch</span></td>
+                <td><span class="dish">Spaghetti &amp; Frikadellen</span></td></tr>
+              <tr><td class="day-cell">DI</td>
+                <td><span class="dish">Crêpes</span></td>
+                <td><span class="dish">Joghurt + Granola + Ananas</span></td>
+                <td><span class="dish">Hähnchen-Reis</span><span class="note">800 ml</span></td>
+                <td><span class="dish">Brioche + PB + Milch</span></td>
+                <td><span class="dish">Steak-Wraps</span></td></tr>
+              <tr><td class="day-cell">MI</td>
+                <td><span class="dish">Crêpes</span></td>
+                <td><span class="dish">Banane + PB</span></td>
+                <td><span class="dish">Letzte Hähnchen-Reis-Bowl</span><span class="note">970 ml • ggf. aus Gefrierfach</span></td>
+                <td><span class="dish">Protein-Milch</span></td>
+                <td><span class="dish">Rinderhack-Tomaten-Pasta</span></td></tr>
+              <tr><td class="day-cell">DO</td>
+                <td><span class="dish">Joghurt-Bowl</span></td>
+                <td><span class="dish">Banane + PB</span></td>
+                <td><span class="dish">Cremige Hähnchen-Pasta</span><span class="note">1040 ml • aus Mi-Mini-Prep</span></td>
+                <td><span class="dish">Gym: Banane + Protein-Milch</span></td>
+                <td><span class="dish">Steak-Reis-Bowl</span><span class="note">+ Mais</span></td></tr>
+              <tr><td class="day-cell">FR</td>
+                <td><span class="dish">Crêpes</span></td>
+                <td><span class="dish">Joghurt + Granola</span></td>
+                <td><span class="dish">Cremige Hähnchen-Pasta</span><span class="note">800 ml</span></td>
+                <td><span class="dish">Pre-Gym: Brioche + Nutella</span></td>
+                <td><span class="dish">Cremige Scharfe Tomatenpasta</span></td></tr>
+              <tr><td class="day-cell">SA</td>
+                <td><span class="dish">Crêpes</span></td>
+                <td><span class="dish">Joghurt + Granola</span></td>
+                <td><span class="dish">Steak-Wrap</span></td>
+                <td><span class="dish">Banane + PB</span></td>
+                <td><span class="dish">🎉 Flex-Dinner (freie Wahl aus Resten)</span></td></tr>
+              <tr><td class="day-cell">SO</td>
+                <td><span class="dish">Crêpes</span></td>
+                <td><span class="dish">Joghurt + Granola</span></td>
+                <td><span class="dish">Reste</span></td>
+                <td><span class="dish">Protein-Milch + Banane</span></td>
+                <td><span class="dish">Reste → 🔄 Reset &amp; Woche-2-Prep</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🚨 Mittwochs-Mini-Prep <small>20–30 Min., läuft nebenher</small></h2>
+        <p style="font-size:.9rem;">Rezept: <b>Cremige Hähnchen-Pasta</b> (400 g Hähnchen, 300 g Pasta, 200 ml Kochcreme, 200 g Passata, Kale, Gewürze). Portionieren: 1040 ml → Donnerstag, 800 ml → Freitag (bei Bedarf einfrieren statt Kühlschrank vollstopfen).</p>
+      </div>
+    </section>
+
+    <!-- ============ WOCHE 2 ============ -->
+    <section id="p2">
+
+      <div class="card">
+        <h2>🛒 Einkaufsliste Woche 2</h2>
+        <div class="grid3">
+          <div>
+            <div class="pill">🥩 Protein</div>
+            <ul class="shop-list"><li>700 g Hähnchen</li><li>600 g Steak</li><li>500 g Rinderhack</li><li>Eier</li><li>Griech. Joghurt</li><li>Protein-Whey-Pulver</li><li>Vollmilch</li></ul>
+          </div>
+          <div>
+            <div class="pill">🍚 Kohlenhydrate</div>
+            <ul class="shop-list"><li>Reis</li><li>Pasta</li><li>Mehl</li><li>Tortillas</li><li>Brioche</li><li>Granola</li><li>Kartoffeln</li></ul>
+            <div class="pill" style="margin-top:14px;">🍍 Obst</div>
+            <ul class="shop-list"><li>Bananen</li><li>Ananas</li><li>Orangen</li></ul>
+          </div>
+          <div>
+            <div class="pill">🧈 Sonstiges</div>
+            <ul class="shop-list">
+              <li>Nutella</li><li>Erdnussbutter</li><li>Honig</li><li>Sojasauce</li><li>Kochcreme</li>
+              <li>Tomaten-Passata</li><li>Sour Cream</li><li>Salsa</li><li>Schwarze Bohnen</li><li>Mais</li>
+              <li>Butter</li><li>Knoblauchpulver</li><li>Paprikapulver</li><li>Salz & Pfeffer</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🧺 Sonntags-Prep</h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Schritt</th><th>Zutaten</th><th>Kurzablauf</th><th>Ergibt</th></tr></thead>
+            <tbody>
+              <tr><td>1️⃣ Reis</td><td>300 g Reis</td><td>Kochen</td><td>Mo + Di + Notfall-Reis</td></tr>
+              <tr><td>2️⃣ Cremiges Knoblauch-Hähnchen</td><td>700 g Hähnchen, 200 ml Kochcreme, Knoblauch, Butter, Gewürze</td><td>Anbraten, würzen, mit Sahne ablöschen, 2–3 Min. köcheln</td><td>Mo Lunch</td></tr>
+              <tr><td>3️⃣ Rinderhack</td><td>500 g Hack, Knoblauchpulver, Paprika, Salz, Pfeffer</td><td>Anbraten, zerkleinern, würzen, durchgaren</td><td>Basis für Burrito-Bowls + Beef-Pasta (1 Kochsession, 2 Gerichte 🧠)</td></tr>
+              <tr><td>4️⃣ Crêpes</td><td>Standard-Teig</td><td>Backen, 2–3 Portionen einlagern</td><td>Frühstück</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📦 Container-Plan Woche 2</h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Behälter</th><th>Inhalt</th><th>Für wann</th></tr></thead>
+            <tbody>
+              <tr><td><span class="chip"><span class="shape rect"></span>1040 ml</span></td><td>Cremiges Knoblauch-Hähnchen-Pasta</td><td>Montag Lunch</td></tr>
+              <tr><td><span class="chip"><span class="shape circle"></span>970 ml</span></td><td>Hähnchen-Reis</td><td>Dienstag Lunch</td></tr>
+              <tr><td><span class="chip"><span class="shape square"></span>800 ml</span></td><td>Rindfleisch-Burrito-Bowl</td><td>Mittwoch Lunch</td></tr>
+              <tr><td><span class="chip"><span class="shape circle"></span>640 ml</span></td><td>Extra Reis</td><td>Notfall</td></tr>
+              <tr><td><span class="chip"><span class="shape rect"></span>630 ml</span></td><td>Extra Hähnchen</td><td>Notfall</td></tr>
+              <tr><td><span class="chip"><span class="shape square"></span>530 ml</span></td><td>Gekochtes Rinderhack</td><td>Burrito/Pasta</td></tr>
+              <tr><td><span class="chip"><span class="shape circle"></span>390 ml ×2</span></td><td>Joghurt</td><td>Snack</td></tr>
+              <tr><td><span class="chip"><span class="shape rect"></span>370 ml ×2</span></td><td>Crêpes</td><td>Frühstück</td></tr>
+              <tr><td><span class="chip"><span class="shape square"></span>310 ml ×2</span></td><td>Obst</td><td>Snack</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📅 Wochenübersicht Woche 2</h2>
+        <div class="tbl-wrap">
+          <table class="meal-overview">
+            <thead><tr><th>Tag</th><th>🥞 Frühstück</th><th>🍌 Snack</th><th>🍗 Mittag</th><th>🥛 Snack</th><th>🌯 Abend</th></tr></thead>
+            <tbody>
+              <tr><td class="day-cell">MO</td><td><span class="dish">Zimt-Nutella-Crêpes</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Cremiges Knoblauch-Hähnchen-Pasta</span><span class="note">1040 ml</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Frischer Steak-Wrap</span></td></tr>
+              <tr><td class="day-cell">DI</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Joghurt + Granola</span></td><td><span class="dish">Hähnchen-Reis</span><span class="note">970 ml</span></td><td><span class="dish">Brioche + PB</span></td><td><span class="dish">Rindfleisch-Burrito-Bowl</span></td></tr>
+              <tr><td class="day-cell">MI</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Rindfleisch-Burrito-Bowl</span><span class="note">800 ml</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Rinderhack-Tomaten-Pasta</span></td></tr>
+              <tr><td class="day-cell">DO</td><td><span class="dish">Joghurt + Granola + Banane</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Honig-Soja-Hähnchen-Reis</span><span class="note">1040 ml • aus Mi-Mini-Prep</span></td><td><span class="dish">Gym: Protein-Milch + Brioche</span></td><td><span class="dish">Steak + Ofenkartoffeln</span></td></tr>
+              <tr><td class="day-cell">FR</td><td><span class="dish">Nutella-Bananen-Crêpes</span></td><td><span class="dish">Joghurt + Granola</span></td><td><span class="dish">Honig-Soja-Hähnchen-Reis</span><span class="note">800 ml</span></td><td><span class="dish">Pre-Gym: Banane + PB</span></td><td><span class="dish">Cremige Tomaten-Rinderhack-Pasta</span></td></tr>
+              <tr><td class="day-cell">SA</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Steak-Wrap</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Spaghetti &amp; Frikadellen</span></td></tr>
+              <tr><td class="day-cell">SO</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Joghurt</span></td><td><span class="dish">Reste</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Reste</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🚨 Mittwochs-Mini-Prep <small>20–30 Min.</small></h2>
+        <p style="font-size:.9rem;">Rezept: <b>Honig-Soja-Hähnchen</b> (400 g Hähnchen, Sojasauce, Honig, Knoblauch). Portionieren: 1040 ml → Donnerstag, 800 ml → Freitag (bei Bedarf einfrieren).</p>
+      </div>
+    </section>
+
+    <!-- ============ WOCHE 3 ============ -->
+    <section id="p3">
+
+      <div class="card">
+        <h2>🛒 Einkaufsliste Woche 3</h2>
+        <div class="grid3">
+          <div>
+            <div class="pill">🥩 Protein</div>
+            <ul class="shop-list"><li>700 g Hähnchen</li><li>600 g Steak</li><li>500 g Rinderhack</li><li>Eier</li><li>Griech. Joghurt</li><li>Protein-Pulver</li><li>Vollmilch</li></ul>
+          </div>
+          <div>
+            <div class="pill">🍚 Kohlenhydrate</div>
+            <ul class="shop-list"><li>Reis</li><li>Pasta</li><li>Mehl</li><li>Tortillas</li><li>Kartoffeln</li><li>Brioche</li><li>Granola</li></ul>
+            <div class="pill" style="margin-top:14px;">🍓 Obst</div>
+            <ul class="shop-list"><li>Bananen</li><li>Erdbeeren</li><li>Orangen</li></ul>
+          </div>
+          <div>
+            <div class="pill">🧈 Sonstiges</div>
+            <ul class="shop-list">
+              <li>Honig</li><li>Erdnussbutter</li><li>Nutella</li><li>Sojasauce</li><li>Passata</li>
+              <li>Kochcreme</li><li>Salsa</li><li>Sour Cream</li><li>Mais</li><li>Schwarze Bohnen</li>
+              <li>Knoblauch</li><li>Paprikapulver</li><li>Salz & Pfeffer</li><li>Butter</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🧺 Sonntags-Prep</h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Schritt</th><th>Was</th><th>Ergibt</th></tr></thead>
+            <tbody>
+              <tr><td>1️⃣</td><td>300 g Reis kochen</td><td>Mo/Di + Notfall</td></tr>
+              <tr><td>2️⃣</td><td>Honig-Knoblauch-Hähnchen zubereiten</td><td>Mo Lunch</td></tr>
+              <tr><td>3️⃣</td><td>500 g Rinderhack anbraten</td><td>Steak-Bowl-Ergänzung / Pasta</td></tr>
+              <tr><td>4️⃣</td><td>Crêpes backen</td><td>Frühstück</td></tr>
+              <tr><td>5️⃣</td><td>Joghurt-Portionen vorbereiten</td><td>Snacks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📦 Container-Plan Woche 3</h2>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Behälter</th><th>Inhalt</th><th>Für wann</th></tr></thead>
+            <tbody>
+              <tr><td><span class="chip"><span class="shape rect"></span>1040 ml</span></td><td>Honig-Knoblauch-Hähnchen + Kartoffeln</td><td>Montag Lunch</td></tr>
+              <tr><td><span class="chip"><span class="shape circle"></span>970 ml</span></td><td>Steak-Reis</td><td>Dienstag Lunch</td></tr>
+              <tr><td><span class="chip"><span class="shape square"></span>800 ml</span></td><td>Hähnchen-Reis</td><td>Mittwoch Lunch</td></tr>
+              <tr><td><span class="chip"><span class="shape circle"></span>640 ml</span></td><td>Extra Reis</td><td>Notfall</td></tr>
+              <tr><td><span class="chip"><span class="shape rect"></span>630 ml</span></td><td>Extra Hähnchen</td><td>Notfall</td></tr>
+              <tr><td><span class="chip"><span class="shape square"></span>530 ml</span></td><td>Gekochtes Rinderhack</td><td>Pasta/Bowl</td></tr>
+              <tr><td><span class="chip"><span class="shape circle"></span>390 ml ×2</span></td><td>Joghurt</td><td>Snack</td></tr>
+              <tr><td><span class="chip"><span class="shape rect"></span>370 ml ×2</span></td><td>Crêpes</td><td>Frühstück</td></tr>
+              <tr><td><span class="chip"><span class="shape square"></span>310 ml ×2</span></td><td>Erdbeeren / Banane</td><td>Snack</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📅 Wochenübersicht Woche 3</h2>
+        <div class="tbl-wrap">
+          <table class="meal-overview">
+            <thead><tr><th>Tag</th><th>🥞 Frühstück</th><th>🍌 Snack</th><th>🍗 Mittag</th><th>🥛 Snack</th><th>🥩 Abend</th></tr></thead>
+            <tbody>
+              <tr><td class="day-cell">MO</td><td><span class="dish">Zimt-Bananen-Crêpes</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Honig-Knoblauch-Hähnchen + Kartoffeln</span><span class="note">1040 ml</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Rinderhack-Tomaten-Pasta</span></td></tr>
+              <tr><td class="day-cell">DI</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Joghurt + Granola</span></td><td><span class="dish">Steak-Reis-Bowl</span><span class="note">Steak frisch braten</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Rindfleisch-Burrito-Bowl</span></td></tr>
+              <tr><td class="day-cell">MI</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Hähnchen-Reis</span><span class="note">800 ml</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Steak-Wrap</span></td></tr>
+              <tr><td class="day-cell">DO</td><td><span class="dish">Joghurt + Granola</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Cremige Hähnchen-Pasta</span><span class="note">1040 ml</span></td><td><span class="dish">Gym: Protein-Milch + Banane</span></td><td><span class="dish">Steak + Kartoffeln</span></td></tr>
+              <tr><td class="day-cell">FR</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Joghurt + Granola</span></td><td><span class="dish">Cremige Hähnchen-Pasta</span><span class="note">800 ml</span></td><td><span class="dish">Pre-Gym: Brioche + Nutella</span></td><td><span class="dish">Rinderhack-Pasta</span></td></tr>
+              <tr><td class="day-cell">SA</td><td><span class="dish">Nutella-Bananen-Crêpes</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Steak-Wrap</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Hähnchen-Reis-Bowl</span></td></tr>
+              <tr><td class="day-cell">SO</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Joghurt</span></td><td><span class="dish">Reste</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Reste</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🚨 Mittwochs-Mini-Prep</h2>
+        <p style="font-size:.9rem;">Rezept: <b>Cremige Hähnchen-Pasta</b> (wie Woche 2). Portionieren: 1040 ml → Donnerstag, 800 ml → Freitag (bei Bedarf einfrieren).</p>
+      </div>
+    </section>
+
+    <!-- ============ WOCHE 4 ============ -->
+    <section id="p4">
+
+      <div class="card">
+        <h2>🛒 Einkaufsliste Woche 4 <small>Favoriten-Woche</small></h2>
+        <div class="grid3">
+          <div>
+            <div class="pill">🥩 Protein</div>
+            <ul class="shop-list"><li>700 g Hähnchen</li><li>600 g Steak</li><li>500 g Rinderhack</li><li>Eier</li><li>Griech. Joghurt</li><li>Protein-Pulver</li><li>Vollmilch</li></ul>
+          </div>
+          <div>
+            <div class="pill">🍚 Kohlenhydrate</div>
+            <ul class="shop-list"><li>Reis</li><li>Spaghetti</li><li>Mehl</li><li>Tortillas</li><li>Brioche</li><li>Granola</li><li>Kartoffeln</li></ul>
+            <div class="pill" style="margin-top:14px;">🍊 Obst</div>
+            <ul class="shop-list"><li>Bananen</li><li>Erdbeeren/Ananas</li><li>Orangen</li></ul>
+          </div>
+          <div>
+            <div class="pill">🧈 Sonstiges</div>
+            <ul class="shop-list">
+              <li>Nutella</li><li>Erdnussbutter</li><li>Honig</li><li>Kochcreme</li><li>Tomaten-Passata</li>
+              <li>Salsa</li><li>Sour Cream</li><li>Mais</li><li>Schwarze Bohnen</li><li>Knoblauch</li>
+              <li>Salz & Pfeffer</li><li>Paprikapulver</li><li>Butter</li><li>Olivenöl</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🧺 Sonntags-Prep <small>dein eingespieltes Standard-System</small></h2>
+        <p style="font-size:.9rem;">Kochen: Reis 🍚 · Hähnchen 🍗 · Rinderhack 🥩 · Crêpes 🥞 · Frikadellen 🍝<br>
+        Lagern: nächste 2–3 Tage → Kühlschrank, spätere Portionen → Gefrierfach.</p>
+      </div>
+
+      <div class="card">
+        <h2>📅 Wochenübersicht Woche 4</h2>
+        <div class="tbl-wrap">
+          <table class="meal-overview">
+            <thead><tr><th>Tag</th><th>🥞 Frühstück</th><th>🍌 Snack</th><th>🍗 Mittag</th><th>🥛 Snack</th><th>🍝 Abend</th></tr></thead>
+            <tbody>
+              <tr><td class="day-cell">MO</td><td><span class="dish">Nutella-Bananen-Crêpes</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Honig-Knoblauch-Hähnchen-Reis</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Spaghetti &amp; Frikadellen</span></td></tr>
+              <tr><td class="day-cell">DI</td><td><span class="dish">Joghurt + Granola</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Steak-Reis-Bowl</span></td><td><span class="dish">Brioche + Nutella</span></td><td><span class="dish">Rindfleisch-Burrito-Bowl</span></td></tr>
+              <tr><td class="day-cell">MI</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Joghurt + Erdbeeren</span></td><td><span class="dish">Hähnchen-Reis</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Steak-Wrap</span></td></tr>
+              <tr><td class="day-cell">DO</td><td><span class="dish">Joghurt + Granola + Banane</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Cremige Hähnchen-Pasta</span><span class="note">aus Mi-Mini-Prep</span></td><td><span class="dish">Gym: Protein-Milch</span></td><td><span class="dish">Steak + Kartoffeln</span></td></tr>
+              <tr><td class="day-cell">FR</td><td><span class="dish">Nutella-Bananen-Crêpes</span></td><td><span class="dish">Joghurt + Granola</span></td><td><span class="dish">Cremige Hähnchen-Pasta</span></td><td><span class="dish">Pre-Gym: Banane + PB</span></td><td><span class="dish">Cremige Tomatenpasta + Rinderhack</span></td></tr>
+              <tr><td class="day-cell">SA</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Banane + PB</span></td><td><span class="dish">Steak-Wrap</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">🎉 Lieblings-Reste (freie Wahl)</span></td></tr>
+              <tr><td class="day-cell">SO</td><td><span class="dish">Crêpes</span></td><td><span class="dish">Joghurt + Granola</span></td><td><span class="dish">Reste</span></td><td><span class="dish">Protein-Milch</span></td><td><span class="dish">Reste → 🏁 Monat 1 Review</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🚨 Mittwochs-Mini-Prep</h2>
+        <p style="font-size:.9rem;">Rezept: <b>Cremige Hähnchen-Pasta</b>. Portionieren: 1040 ml → Donnerstag, 800 ml → Freitag.</p>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg,#fff,var(--pink-050));border-color:var(--pink-300);">
+        <h2>🏁 Monats-Check <small>nicht blind in Monat 2 starten</small></h2>
+        <p style="font-size:.92rem;">Nach Woche 4 schaust du ehrlich: Welche Gerichte hast du wirklich gerne gegessen? Genau diese wandern als feste "Permanent-Rezepte" in dein System – der Rest wird ersetzt.</p>
+      </div>
+    </section>
+
+    <!-- ============ REZEPTBUCH ============ -->
+    <section id="p5">
+      <div class="card">
+        <h2>📖 Rezeptbuch <small>alle Rezepte einmal, sauber zum Nachschlagen</small></h2>
+      </div>
+
+      <div class="card">
+        <h3>🥞 Frühstück &amp; Snacks</h3>
+        <div class="grid2">
+          <div class="recipe">
+            <h4>Crêpe-Grundteig <span style="font-size:.8em;">(+ Varianten: Nutella-Banane / Zimt-Banane)</span></h4>
+            <div class="meta">⏱️ 15 Min. · ergibt mehrere Crêpes</div>
+            <div class="ing">2 Eier · 2 Tassen Mehl · 1 Tasse Milch · 1 Tasse Wasser · ½ TL Salz · 2 EL Öl</div>
+            <ol>
+              <li>Milch, Wasser, Eier &amp; Salz verquirlen.</li>
+              <li>Mehl &amp; Öl nach und nach einrühren.</li>
+              <li>Portionsweise auf heißer Pfanne/Platte backen, bis leicht gebräunt.</li>
+              <li>Wenden, fertig backen, abkühlen lassen.</li>
+            </ol>
+            <p style="font-size:.82rem;">Zum Servieren: 20–25 g Nutella + 1 Banane in Scheiben, falten. (Zimt-Variante: Zimt statt/zusätzlich zu Nutella.) Erst beim Essen befüllen, sonst werden sie labbrig!</p>
+          </div>
+          <div class="recipe">
+            <h4>Protein-Whey-Milch</h4>
+            <div class="meta">⏱️ 2 Min.</div>
+            <div class="ing">300 ml Vollmilch · 30 g Protein-Whey-Pulver · 10 g Honig (optional)</div>
+            <ol><li>Alles in den Shaker.</li><li>Kräftig schütteln.</li><li>Trinken.</li></ol>
+          </div>
+          <div class="recipe">
+            <h4>Banane + Erdnussbutter</h4>
+            <div class="meta">⏱️ 2 Min.</div>
+            <div class="ing">1 Banane · 1–2 EL Erdnussbutter</div>
+            <p style="font-size:.85rem;">Banane schälen, Erdnussbutter dazu essen. Fertig.</p>
+          </div>
+          <div class="recipe">
+            <h4>Griechisches Joghurt-Bowl</h4>
+            <div class="meta">⏱️ 3 Min.</div>
+            <div class="ing">250 g Griech. Joghurt · 40–50 g Granola · 10 g Honig · Obst (Ananas/Banane/Erdbeeren)</div>
+            <ol><li>Joghurt in Schüssel.</li><li>Granola, Honig &amp; Obst dazu.</li></ol>
+          </div>
+          <div class="recipe">
+            <h4>Brioche + PB / Nutella</h4>
+            <div class="meta">⏱️ 2 Min.</div>
+            <div class="ing">1–2 Brioche-Brötchen · Erdnussbutter oder Nutella · optional Milch</div>
+            <p style="font-size:.85rem;">Brioche bestreichen, dazu ein Glas Milch.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🍗 Hähnchen-Gerichte</h3>
+        <div class="grid2">
+          <div class="recipe">
+            <h4>Honig-Knoblauch-Hähnchen</h4>
+            <div class="meta">⏱️ ~25 Min.</div>
+            <div class="ing">700–800 g Hähnchen · 15–20 g Olivenöl · 30 g Honig · 30 ml Sojasauce · Knoblauchpulver, Salz, Pfeffer</div>
+            <ol>
+              <li>Ofen auf 200°C, Hähnchen würfeln.</li>
+              <li>Mit Öl &amp; Gewürzen vermischen, auf Blech verteilen.</li>
+              <li>~20 Min. backen, nach 10 Min. wenden, Garpunkt prüfen.</li>
+              <li>Honig + Sojasauce mischen, über das Hähnchen geben.</li>
+            </ol>
+          </div>
+          <div class="recipe">
+            <h4>Cremiges Knoblauch-Hähnchen</h4>
+            <div class="meta">⏱️ ~15 Min.</div>
+            <div class="ing">700 g Hähnchen · 200 ml Kochcreme · Knoblauch, Salz, Pfeffer · 10 g Butter</div>
+            <ol><li>Hähnchen in Butter anbraten, würzen, durchgaren.</li><li>Hitze reduzieren, Sahne einrühren, 2–3 Min. köcheln.</li></ol>
+          </div>
+          <div class="recipe">
+            <h4>Honig-Soja-Hähnchen</h4>
+            <div class="meta">⏱️ ~15 Min.</div>
+            <div class="ing">400 g Hähnchen · Sojasauce · Honig · Knoblauch</div>
+            <ol><li>Hähnchen mit Knoblauch anbraten &amp; durchgaren.</li><li>Sojasauce + Honig unterrühren.</li></ol>
+          </div>
+          <div class="recipe">
+            <h4>Cremige Hähnchen-Pasta</h4>
+            <div class="meta">⏱️ 20–30 Min.</div>
+            <div class="ing">400 g Hähnchen · 300 g Pasta · 200 ml Kochcreme · 200 g Passata · Kale · Gewürze</div>
+            <ol>
+              <li>Nudelwasser aufsetzen; Hähnchen würfeln, anbraten &amp; würzen, durchgaren.</li>
+              <li>Passata, Sahne &amp; Kale einrühren.</li>
+              <li>Pasta kochen, abgießen, unter die Sauce heben.</li>
+            </ol>
+          </div>
+          <div class="recipe">
+            <h4>Brokkoli (Mikrowelle)</h4>
+            <div class="meta">⏱️ 5 Min.</div>
+            <div class="ing">TK-Brokkoli, kleine Portion</div>
+            <p style="font-size:.85rem;">Nach Packungsangabe mikrowellieren, abtropfen. Keine Riesenmenge kochen!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🥩 Rind &amp; Steak</h3>
+        <div class="grid2">
+          <div class="recipe">
+            <h4>Frikadellen in Tomatensauce</h4>
+            <div class="meta">⏱️ ~25 Min.</div>
+            <div class="ing">500 g Rinderhack · 1 Ei · 40 g Paniermehl · Gewürze · 500 g Passata · Kale</div>
+            <ol>
+              <li>Hack, Ei, Paniermehl &amp; Gewürze vermengen, kleine Bällchen formen.</li>
+              <li>Von beiden Seiten anbraten.</li>
+              <li>Passata &amp; Kale zugeben, zugedeckt 12–15 Min. köcheln.</li>
+            </ol>
+          </div>
+          <div class="recipe">
+            <h4>Angebratenes Rinderhack (Basis)</h4>
+            <div class="meta">⏱️ ~10 Min. · 1 Kochsession, 2 Gerichte</div>
+            <div class="ing">500 g Rinderhack · Knoblauchpulver, Paprika, Salz, Pfeffer</div>
+            <p style="font-size:.85rem;">Anbraten, zerkleinern, würzen, durchgaren. Wird zur Basis für Burrito-Bowls & Beef-Pasta.</p>
+          </div>
+          <div class="recipe">
+            <h4>Rindfleisch-Burrito-Bowl</h4>
+            <div class="meta">⏱️ 5 Min.</div>
+            <div class="ing">Reis · Rinderhack · Mais · Schwarze Bohnen · Salsa · Sour Cream · Käse</div>
+            <p style="font-size:.85rem;">Alles in die Schüssel schichten, erwärmen, mit Salsa &amp; Sour Cream toppen.</p>
+          </div>
+          <div class="recipe">
+            <h4>Rinderhack-Tomaten-Pasta</h4>
+            <div class="meta">⏱️ ~15 Min.</div>
+            <div class="ing">150–200 g gekochtes Rinderhack/Frikadellen · Spaghetti · Tomatensauce</div>
+            <p style="font-size:.85rem;">Pasta kochen, Hack erhitzen &amp; mit Sauce mischen, unterheben.</p>
+          </div>
+          <div class="recipe">
+            <h4>Steak-Wraps</h4>
+            <div class="meta">⏱️ 10–15 Min.</div>
+            <div class="ing">150–200 g Steak · 1–2 Tortillas · Salsa · Sour Cream</div>
+            <ol><li>Steak trocken tupfen, würzen, scharf anbraten, 5 Min. ruhen lassen, aufschneiden.</li><li>Tortilla kurz erwärmen, füllen, mit Salsa &amp; Sour Cream, falten.</li></ol>
+          </div>
+          <div class="recipe">
+            <h4>Steak + Ofenkartoffeln</h4>
+            <div class="meta">⏱️ ~40 Min.</div>
+            <div class="ing">180–220 g Steak · 300 g Kartoffeln · Butter, Salz, Pfeffer, Knoblauchpulver</div>
+            <ol><li>Kartoffeln würfeln, würzen, 30–35 Min. bei 200°C backen (halbzeit wenden).</li><li>Steak scharf anbraten, ruhen lassen, aufschneiden, mit Butter servieren.</li></ol>
+          </div>
+          <div class="recipe">
+            <h4>Steak-Reis-Bowl</h4>
+            <div class="meta">⏱️ ~15 Min.</div>
+            <div class="ing">150–200 g Steak · Reis · Mais · Sauce</div>
+            <p style="font-size:.85rem;">Reis erwärmen, Steak anbraten &amp; aufschneiden, mit Mais &amp; Sauce im Bowl anrichten.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🍝 Pasta-Sonderformen</h3>
+        <div class="grid2">
+          <div class="recipe">
+            <h4>Cremige Scharfe Tomatenpasta</h4>
+            <div class="meta">⏱️ ~15 Min. · Comfort-Food-Dinner</div>
+            <div class="ing">100–150 g Pasta · 100–150 ml Passata · 50–75 ml Kochcreme · Öl · Knoblauchpulver, Paprika, Chiliflocken</div>
+            <p style="font-size:.85rem;">Pasta kochen. Passata mit Gewürzen &amp; Sahne erhitzen, Pasta untermischen. Für mehr Kalorien: Reste-Hähnchen oder -Rind dazugeben.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NOTFALLPLAN ============ -->
+    <section id="p6">
+      <div class="card emergency">
+        <h2>🚨 Dein "Ich-hab-keinen-Appetit"-Protokoll</h2>
+        <p style="font-size:.95rem;">Einer der wichtigsten Teile deines gesamten Plans. Wenn du dein volles Abendessen anschaust und dein Kopf sagt "auf keinen Fall" – <b>NICHT einfach skippen.</b></p>
+
+        <div class="steps-h"><div class="stepnum">1</div><b>300 ml Vollmilch + Proteinpulver trinken</b></div>
+        <div class="steps-h"><div class="stepnum">2</div><b>1 Banane + 1–2 EL Erdnussbutter essen</b></div>
+        <div class="steps-h"><div class="stepnum">3</div><b>30–60 Minuten warten</b></div>
+        <div class="steps-h"><div class="stepnum">4</div><b>Dein eigentliches Essen probieren</b> — schaffst du nur die Hälfte, ist das okay: Rest wegstellen, später essen.</div>
+
+        <div class="divider"></div>
+        <p style="font-family:'Baloo 2';font-weight:700;color:var(--pink-600);text-align:center;font-size:1.1rem;">
+        🎯 Dein Ziel: An den meisten Tagen genug essen, keine Mahlzeiten wegen Appetitlosigkeit auslassen, und 4× die Woche ins Gym. Wenn das dein Monats-Standard wird, steht das Fundament für die nächsten 5 Monate. ❤️
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>🌸 Made with pink energy for your 6-Monats Meal System 🌸</footer>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'mealplanShopState_v1';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ state = {}; }
+
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+  }
+
+  var items = document.querySelectorAll('.shop-list li');
+  items.forEach(function(li, i){
+    var id = 'item-' + i;
+    var defaultText = li.textContent.trim();
+    li.innerHTML = '';
+
+    var chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.className = 'chk';
+
+    var span = document.createElement('span');
+    span.className = 'txt';
+    span.contentEditable = 'true';
+    span.spellcheck = false;
+
+    var saved = state[id];
+    span.textContent = (saved && typeof saved.text === 'string') ? saved.text : defaultText;
+    if(saved && saved.checked){
+      chk.checked = true;
+      li.classList.add('done');
+    }
+
+    li.appendChild(chk);
+    li.appendChild(span);
+
+    chk.addEventListener('change', function(){
+      li.classList.toggle('done', chk.checked);
+      state[id] = { checked: chk.checked, text: span.textContent };
+      save();
+    });
+
+    function persistText(){
+      state[id] = { checked: chk.checked, text: span.textContent };
+      save();
+    }
+    span.addEventListener('input', persistText);
+    span.addEventListener('blur', persistText);
+    span.addEventListener('keydown', function(ev){
+      if(ev.key === 'Enter'){ ev.preventDefault(); span.blur(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
